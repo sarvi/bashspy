@@ -1,0 +1,237 @@
+[["ID", "x"], ["ASSIGN", "+="], ["VAL_STRING", "1"], ["ID", "y"], ["ASSIGN", "="], ["NEWLINE", "\n"]]
+
+x+=1 y=
+
+[["WORD", "gcc"], ["REDIRECT", "1>"], ["WORD", "filename"], ["NEWLINE", "\n"],
+ ["WORD", "gcc"], ["REDIRECT", "2>"], ["WORD", "filename"], ["NEWLINE", "\n"],
+ ["WORD", "gcc"], ["REDIRECT", ">"], ["WORD", "filename"], ["NEWLINE", "\n"],
+ ["WORD", "gcc"], ["REDIRECT", "&>"], ["WORD", "filename"], ["NEWLINE", "\n"],
+ ["WORD", "gcc"], ["REDIRECT", "[j]<>"], ["WORD", "filename"], ["NEWLINE", "\n"],
+ ["WORD", "gcc"], ["REDIRECT", "i>&j"], ["NEWLINE", "\n"],
+ ["WORD", "ls"], ["OPTION", "-l"], ["REDIRECT", "2>&1"], ["REDIRECT", ">&3"], ["REDIRECT", "3>&-"], ["PIPE", "|"], ["WORD", "grep"], ["WORD", "bad"], ["REDIRECT", "3>&-"], ["NEWLINE", "\n"]]
+
+gcc 1>filename
+gcc 2>filename
+gcc  >filename
+gcc &>filename
+gcc [j]<>filename
+gcc i>&j
+ls -l 2>&1 >&3 3>&- | grep bad 3>&-
+
+
+[["WORD", "gcc"], ["REDIRECT", "1>"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "2>"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", ">"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "&>"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", ">>"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "0<"], ["WORD", "FILENAME"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "<"], ["WORD", "FILENAME"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "[j]<>"], ["WORD", "filename"], ["CMDSEP", ";"],
+ ["WORD", "gcc"], ["REDIRECT", "i>&j"], ["CMDSEP", ";"],
+ ["WORD", "ls"], ["OPTION", "-l"], ["REDIRECT", "2>&1"], ["REDIRECT", ">&3"], ["REDIRECT", "3>&-"], ["PIPE", "|"], ["WORD", "grep"], ["WORD", "bad"], ["REDIRECT", "3>&-"], ["NEWLINE", "\n"]] 
+
+gcc 1>filename; gcc 2>filename; gcc  >filename ; gcc &>filename ; gcc >> filename ; gcc 0< FILENAME  ; gcc < FILENAME ; gcc [j]<>filename ; gcc i>&j ; ls -l 2>&1 >&3 3>&- | grep bad 3>&-
+
+[["IF", "if"], ["LBRACK", "["], ["VARIABLE", "$S1"], ["ASSIGN", "="], ["VARIABLE", "$S2"], ["RBRACK", "]"], ["CMDSEP", ";"], ["NEWLINE", "\n"], ["THEN", "then"], ["NEWLINE", "\n"],
+["WORD", "echo"], ["ECHO_STRING", "\"S1('$S1') is not equal to S2('$S2')\""], ["NEWLINE", "\n"], ["FI", "fi"], ["NEWLINE", "\n"]]
+
+if [ $S1=$S2 ];
+        then
+                echo "S1('$S1') is not equal to S2('$S2')"
+        fi
+
+[["WORD", "gcc"], ["OPTION", "--opt"], ["ASSIGN", "="], ["WORD", "value"], ["WORD", "arg1"], ["WORD", "arg2"], ["NEWLINE", "\n"]]
+
+gcc --opt= value arg1 arg2
+
+[["ID", "PWD"], ["ASSIGN", "="], ["ID", "PLATFORM"], ["ASSIGN", "="], ["VAL_STRING", "platform2"], ["NEWLINE", "\n"]]
+
+PWD= PLATFORM=platform2 
+
+[["ID", "PWD"], ["ASSIGN", "="], ["CMD_EXP", "$(pwd something)"], ["ID", "PLATFORM"], ["ASSIGN", "="], ["VAL_STRING", "platform2"], ["NEWLINE", "\n"]]
+
+PWD=$(pwd something) PLATFORM=platform2
+
+[["ID", "PWD"], ["ASSIGN", "="], ["VAR_SUBST", "${var1 - var2}"], ["ID", "PLATFORM"], ["ASSIGN", "="], ["VAL_STRING", "platform2"], ["NEWLINE", "\n"]]
+
+PWD=${var1 - var2} PLATFORM=platform2
+
+[["ID", "PWD"], ["ASSIGN", "="], ["VAL_STRING", "codebase/"], ["ID", "PLATFORM"], ["ASSIGN", "="], ["VAL_STRING", "platform2"],
+["WORD", "/a/b/c/d/e/x86_64_cge6/toolchain/x86_64-com-linux-cc"], ["OPTION", "-m64"], ["OPTION", "-fPIC"],
+["OPTION", "--sysroot"], ["ASSIGN", "="], ["VAL_STRING", "/a/b/c/d/e/sysroot-x86_64_cge6"], ["OPTION", "-MD"], ["OPTION", "-MP"],
+["OPTION", "-MT"], ["WORD", "comp_a/aa/obj-x86_64_cge6/src/a_source.o"], ["OPTION", "-MF"], ["WORD", "comp_a/aa/obj-x86_64_cge6/src/a_source.d"],
+["OPTION", "-D__BINOS__"], ["OPTION", "-D__C_SOURCE__"], ["OPTION", "-D_YOCTO_SDK_"], ["OPTION", "-O3"], ["OPTION", "-gdwarf-2"], ["OPTION", "-g3"],
+["OPTION", "-fPIC"], ["OPTION", "-I"], ["WORD", "./e/x86_64_cge6/usr/codebase/include/os"], ["OPTION", "-I"],["WORD", "./e/x86_64_cge6/usr/codebase/include"],
+["OPTION", "-isystem"], ["WORD", "./e/x86_64_cge6/usr/include"], ["OPTION", "-isystem"], ["WORD", "./e/sysroot-x86_64_cge6/usr/include/libxml2"],
+["OPTION", "-isystem"], ["WORD", "./e/sysroot-x86_64_cge6/usr/include"], ["OPTION", "-I"], ["WORD", "./e/x86_64_cge6/usr/codebase/include"],
+["OPTION", "-c"], ["WORD", "comp_a/aa/src/a_source.c"], ["OPTION", "-o"], ["WORD", "comp_a/aa/obj-x86_64_cge6/src/a_source.o"], ["NEWLINE", "\n"]]
+
+PWD=codebase/ PLATFORM=platform2 /a/b/c/d/e/x86_64_cge6/toolchain/x86_64-com-linux-cc -m64 -fPIC --sysroot=/a/b/c/d/e/sysroot-x86_64_cge6 -MD -MP -MT comp_a/aa/obj-x86_64_cge6/src/a_source.o -MF comp_a/aa/obj-x86_64_cge6/src/a_source.d  -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/x86_64_cge6/usr/codebase/include/os -I./e/x86_64_cge6/usr/codebase/include -isystem ./e/x86_64_cge6/usr/include -isystem ./e/sysroot-x86_64_cge6/usr/include/libxml2 -isystem ./e/sysroot-x86_64_cge6/usr/include  -I./e/x86_64_cge6/usr/codebase/include -c comp_a/aa/src/a_source.c -o comp_a/aa/obj-x86_64_cge6/src/a_source.o
+
+[["ID", "PWD"], ["ASSIGN", "="], ["VAL_STRING", "codebase/"], ["ID", "PLATFORM"], ["ASSIGN", "="], ["VAL_STRING", "platform1"],
+["WORD", "/a/b/c/d/e/mips64_cge7/toolchain/mips64-com-linux-cc"], ["OPTION", "-mabi"], ["ASSIGN", "="], ["VAL_STRING", "64"],
+["OPTION", "-march"], ["ASSIGN", "="], ["VAL_STRING", "octeon"], ["OPTION", "-D__MIPS__"], ["OPTION", "-mxgot"], ["OPTION", "-msoft-float"],
+["OPTION", "-fasynchronous-unwind-tables"], ["OPTION", "-shared-libgcc"], ["OPTION", "-march"], ["ASSIGN", "="], ["VAL_STRING", "octeon"], ["OPTION", "-fPIC"],
+["OPTION", "--sysroot"], ["ASSIGN", "="], ["VAL_STRING", "/a/b/c/d/e/sysroot-mips64_cge7"], ["OPTION", "-MD"], ["OPTION", "-MP"],
+["OPTION", "-MT"], ["WORD", "comp_a/aa/obj-mips64_cge7/src/a_source.o"], ["OPTION", "-MF"], ["WORD", "comp_a/aa/obj-mips64_cge7/src/a_source.d"],
+["OPTION", "-D__BINOS__"], ["OPTION", "-D__C_SOURCE__"], ["OPTION", "-D_YOCTO_SDK_"], ["OPTION", "-O3"], ["OPTION", "-gdwarf-2"], ["OPTION", "-g3"], ["OPTION", "-fPIC"],
+["OPTION", "-I"], ["WORD", "./e/mips64_cge7/usr/codebase/include/os"], ["OPTION", "-I"], ["WORD", "./e/mips64_cge7/usr/codebase/include"],
+["OPTION", "-isystem"], ["WORD", "./e/mips64_cge7/usr/include"], ["OPTION", "-isystem"], ["WORD", "./e/sysroot-mips64_cge7/usr/include/libxml2"],
+["OPTION", "-isystem"], ["WORD", "./e/sysroot-mips64_cge7/usr/include"], ["OPTION", "-I"], ["WORD", "./e/mips64_cge7/usr/codebase/include"],
+["OPTION", "-c"], ["WORD", "comp_a/aa/src/a_source.c"], ["OPTION", "-o"], ["WORD", "comp_a/aa/obj-mips64_cge7/src/a_source.o"], ["NEWLINE", "\n"]]
+
+PWD=codebase/ PLATFORM=platform1 /a/b/c/d/e/mips64_cge7/toolchain/mips64-com-linux-cc -mabi=64 -march=octeon -D__MIPS__ -mxgot -msoft-float -fasynchronous-unwind-tables -shared-libgcc -march=octeon -fPIC --sysroot=/a/b/c/d/e/sysroot-mips64_cge7 -MD -MP -MT comp_a/aa/obj-mips64_cge7/src/a_source.o -MF comp_a/aa/obj-mips64_cge7/src/a_source.d  -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/mips64_cge7/usr/codebase/include/os -I./e/mips64_cge7/usr/codebase/include -isystem ./e/mips64_cge7/usr/include -isystem ./e/sysroot-mips64_cge7/usr/include/libxml2 -isystem ./e/sysroot-mips64_cge7/usr/include  -I./e/mips64_cge7/usr/codebase/include -c comp_a/aa/src/a_source.c -o comp_a/aa/obj-mips64_cge7/src/a_source.o
+
+[["ID", "ARCH"], ["ASSIGN", "="], ["VAL_STRING", "x86e"], ["WORD", "x86_64-w-linux-gcc"], ["OPTION", "-DL_D_P"], ["ASSIGN", "="],
+["OPTION", "-DM_A_V"], ["ASSIGN", "="], ["VAL_STRING", "17"], ["OPTION", "-std"], ["ASSIGN", "="], ["VAL_STRING", "gnu99"],
+["OPTION", "-D_GLIBCXX_USE_CXX11_ABI"], ["ASSIGN", "="], ["VAL_STRING", "0"], ["OPTION", "-I"], ["WORD", "../comp-sw/include"],
+["OPTION", "-I"], ["WORD", "../comp-sw/include/pre-os"], ["OPTION", "-I"], ["WORD", "../comp-sw/include/pre-os/x86e"],
+["OPTION", "-I"], ["WORD", "../include"], ["OPTION", "-I"], ["WORD", "../include/dcos"], ["OPTION", "-I"], ["WORD", "../comp-sw/include/post-os"],
+["OPTION", "-I"], ["WORD", "../comp-sw/include/kernel"], ["OPTION", "-I"], ["WORD", "../feature/fhrp"], ["OPTION", "-I"], ["WORD", "ins/x86e/final/f/sup/internal_inc/"],
+["OPTION", "-I"], ["WORD", "../feature/f/enumlib/internal_inc"], ["OPTION", "-I"], ["WORD", "../include/xlib/include"],
+["OPTION", "-I"], ["WORD", "../feature/f/n/genlib/"], ["OPTION", "-I"], ["WORD", "../feature/f/genlib/"],
+["OPTION", "-I"], ["WORD", "ins/x86e/final/f/g/h/internal_inc/"], ["OPTION", "-I"], ["WORD", "ins/x86e/final/f/g/h/include/"],
+["OPTION", "-I"], ["WORD", "ins/x86e/ff/gg/hh/ii/internal_inc/"], ["OPTION", "-I"], ["WORD", "ins/x86e/ff/gg/hh/ii/include/"],
+["OPTION", "-I"], ["WORD", "ins/x86e/final/f/sup/v/internal_inc/"], ["OPTION", "-I"], ["WORD", "ins/x86e/final/f/sup/v/include/"],
+["OPTION", "-I"], ["WORD", "ins/x86e/final/f/sup/v/src/"], ["OPTION", "-I"], ["WORD", "../include/is/od"],
+["OPTION", "-I"], ["WORD", "../include/dcos/od"], ["OPTION", "-I"], ["WORD", "../feature/f/src"],
+["OPTION", "-Iins"], ["WORD", "/x86e/final/sup/include/cli"], ["OPTION", "-I"], ["WORD", "../feature/codebase2_config/ins"],
+["OPTION", "-I"], ["WORD", "../feature/codebase2_config/ins/x86e"], ["OPTION", "-I"], ["WORD", "../feature/codebase2_config/ins/x86e/sup"],
+["OPTION", "-I"], ["WORD", "../third-party/bin/x86s/ps/a-f/include"], ["OPTION", "-include"], ["DQSTRING", "\"o_map.h\""],
+["OPTION", "-DNDEBUG"], ["OPTION", "-DFINAL"], ["OPTION", "-DL_D_P"], ["ASSIGN", "="], ["OPTION", "-D__dcos__"],
+["OPTION", "-D__linux__"], ["OPTION", "-D__E_S__"], ["OPTION", "-D__X_LINUX__"], ["OPTION", "-DA_H_V"],
+["OPTION", "-DM_A_V"], ["ASSIGN", "="], ["VAL_STRING", "17"], ["OPTION", "-Wall"], ["OPTION", "-g"], ["OPTION", "-MP"], ["OPTION", "-pipe"],
+["OPTION", "-fno-omit-frame-pointer"], ["OPTION", "--sysroot"], ["ASSIGN", "="], ["VAL_STRING", "/a/p/r_c/wr-x86/8/sysroots/C-M-1/sysroots/corei7-64-xs-linux"],
+["OPTION", "-Wall"], ["OPTION", "-Werror"], ["OPTION", "-std"], ["ASSIGN", "="], ["VAL_STRING", "gnu99"], ["OPTION", "-fno-omit-frame-pointer"],
+["OPTION", "-Wno-pointer-sign"], ["OPTION", "-fgnu89-inline"], ["OPTION", "-fno-strict-aliasing"], ["OPTION", "-march"], ["ASSIGN", "="], ["VAL_STRING", "corei7"],
+["OPTION", "-m32"], ["OPTION", "-mno-sse"], ["OPTION", "-mno-mmx"], ["OPTION", "-mno-sse2"], ["OPTION", "-mno-3dnow"], ["OPTION", "-mno-avx"], ["OPTION", "-pthread"],
+["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "unused-but-set-variable"], ["OPTION", "-DH_R_T"], ["OPTION", "-DINS_GLOB_CONST"],
+["OPTION", "-D_GLIBCXX_USE_CXX11_ABI"], ["ASSIGN", "="], ["VAL_STRING", "0"], ["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "implicit-function-declaration"],
+["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "switch"], ["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "unused-but-set-variable"],
+["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "deprecated-declarations"], ["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "unused-variable"],
+["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "unused-function"], ["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "maybe-uninitialized"],
+["OPTION", "-Wno-unused-parameter"], ["OPTION", "-Wno-uninitialized"], ["OPTION", "-Wno-ignored-qualifiers"], ["OPTION", "-DTARGET_NX"], 
+["OPTION", "-DFHRP_NX_SHIM_V2"], ["OPTION", "-D__X_LINUX__"], ["OPTION", "-DHAVE_SYS_EL_H"], ["OPTION", "-D__DCOS__"], ["OPTION", "-O1"],
+["OPTION", "-Wno-error"], ["ASSIGN", "="], ["VAL_STRING", "enum-compare"], ["OPTION", "-Werror"], ["OPTION", "-DFI_C_FILE"], ["OPTION", "-O0"],
+["OPTION", "-rdynamic"], ["OPTION", "-fPIC"], ["OPTION", "-DPIC"], ["OPTION", "-U_IO_MS_IO"], ["OPTION", "-c"], ["OPTION", "-MMD"],
+["OPTION", "-MT"], ["WORD", "ins/x86e/final/f/sup/src/f_d.lo"], ["OPTION", "-MF"], ["DQSTRING", "\"ins/x86e/final/f/sup/src/f_d.ld\""],
+["OPTION", "-o"], ["WORD", "ins/x86e/final/f/sup/src/f_d.lo"], ["WORD", "../feature/f/src/f_d.c"], ["NEWLINE", "\n"]]
+
+ARCH=x86e  x86_64-w-linux-gcc -DL_D_P=  -DM_A_V=17 -std=gnu99 -D_GLIBCXX_USE_CXX11_ABI=0 -I../comp-sw/include -I../comp-sw/include/pre-os -I../comp-sw/include/pre-os/x86e -I../include -I../include/dcos -I../comp-sw/include/post-os -I../comp-sw/include/kernel -I../feature/fhrp -I ins/x86e/final/f/sup/internal_inc/ -I ../feature/f/enumlib/internal_inc -I ../include/xlib/include -I ../feature/f/n/genlib/ -I ../feature/f/genlib/ -I ins/x86e/final/f/g/h/internal_inc/ -I ins/x86e/final/f/g/h/include/ -I ins/x86e/ff/gg/hh/ii/internal_inc/ -I ins/x86e/ff/gg/hh/ii/include/ -I ins/x86e/final/f/sup/v/internal_inc/ -I ins/x86e/final/f/sup/v/include/ -I ins/x86e/final/f/sup/v/src/ -I ../include/is/od -I ../include/dcos/od -I../feature/f/src -Iins/x86e/final/sup/include/cli -I../feature/codebase2_config/ins -I../feature/codebase2_config/ins/x86e -I../feature/codebase2_config/ins/x86e/sup -I../third-party/bin/x86s/ps/a-f/include -include "o_map.h" -DNDEBUG -DFINAL -DL_D_P=  -D__dcos__ -D__linux__ -D__E_S__ -D__X_LINUX__  -DA_H_V -DM_A_V=17 -Wall -g -MP -pipe    -fno-omit-frame-pointer --sysroot=/a/p/r_c/wr-x86/8/sysroots/C-M-1/sysroots/corei7-64-xs-linux -Wall -Werror -std=gnu99 -fno-omit-frame-pointer -Wno-pointer-sign -fgnu89-inline -fno-strict-aliasing -march=corei7 -m32 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -pthread -Wno-error=unused-but-set-variable -DH_R_T -DINS_GLOB_CONST -D_GLIBCXX_USE_CXX11_ABI=0 -Wno-error=implicit-function-declaration -Wno-error=switch -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wno-error=unused-variable -Wno-error=unused-function -Wno-error=maybe-uninitialized -Wno-unused-parameter -Wno-uninitialized -Wno-ignored-qualifiers    -DTARGET_NX -DFHRP_NX_SHIM_V2 -D__X_LINUX__ -DHAVE_SYS_EL_H -D__DCOS__ -O1 -Wno-error=enum-compare -Werror -DFI_C_FILE -O0 -rdynamic   -fPIC -DPIC -U_IO_MS_IO  -c -MMD -MT ins/x86e/final/f/sup/src/f_d.lo -MF "ins/x86e/final/f/sup/src/f_d.ld" -o ins/x86e/final/f/sup/src/f_d.lo ../feature/f/src/f_d.c
+
+[["LET", "let"], ["ID", "X"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["CMDSEP", ";"], ["IF", "if"], ["LBRACK", "["], ["DQSTRING", "\"\""], ["BOOL_EQ", "=="],
+["DQSTRING", "\"imaging\""], ["OPTION", "-o"], ["DQSTRING", "\"\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"\""], ["RBRACK", "]"], ["CMDSEP", ";"], ["THEN", "then"],
+["IF", "if"], ["LDBRACK", "[["], ["OPTION", "-f"], ["DQSTRING", "\"../build/tmp/d/kexports.h\""], ["RDBRACK", "]]"], ["BOOL_AND", "&&"],
+["LPAREN", "("], ["LPAREN", "("], ["LDBRACK", "[["], ["DQSTRING", "\"i_sup\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"p_l1\""],
+["RDBRACK", "]]"], ["BOOL_OR", "||"], ["LDBRACK", "[["], ["DQSTRING", "\"i/f/a.done\""], ["BOOL_EQ", "=="],
+["STAR", "*"], ["DQSTRING", "\"p_l1\""], ["RDBRACK", "]]"], ["RPAREN", ")"], ["BOOL_OR", "||"], ["LPAREN", "("], ["LDBRACK", "[["],
+["DQSTRING", "\"i_sup\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"nt_p_j1\""], ["RDBRACK", "]]"], ["BOOL_OR", "||"], ["LDBRACK", "[["],
+["DQSTRING", "\"i/f/a.done\""], ["BOOL_EQ", "=="], ["STAR", "*"], ["DQSTRING", "\"nt_p_j1\""], ["RDBRACK", "]]"],
+["RPAREN", ")"], ["RPAREN", ")"], ["CMDSEP", ";"], ["THEN", "then"], ["WORD", "echo"],
+["ECHO_STRING", "Executing ../build/c.f/k_s.my --action create --verbose --k-s-lc lc --k-s-sup 1 --action build --both --tar --bldtype final "],
+["CMDSEP", ";"], ["IF", "if"], ["LBRACK", "["], ["OPTION", "-f"], ["WORD", "/r/b/moop"], ["RBRACK", "]"], ["CMDSEP", ";"], ["THEN", "then"],
+["WORD", "/r/b/moop"], ["WORD", "../build/c.f/k_s.my"], ["OPTION", "--action"], ["WORD", "create"], ["OPTION", "--verbose"],
+["OPTION", "--k-s-lc"], ["WORD", "lc"], ["OPTION", "--k-s-sup"], ["WORD", "1"], ["OPTION", "--action"], ["WORD", "build"], ["OPTION", "--tar"],
+["OPTION", "--both"], ["OPTION", "--bldtype"], ["WORD", "final"], ["REDIRECT", "2>&1"], ["REDIRECT", ">"], ["WORD", "../build/tmp/d/d_b.l"],
+["CMDSEP", ";"], ["ELSE", "else"], ["WORD", "moop"], ["WORD", "../build/c.f/k_s.my"], ["OPTION", "--action"],
+["WORD", "create"], ["OPTION", "--verbose"], ["OPTION", "--k-s-lc"], ["WORD", "lc"], ["OPTION", "--k-s-sup"], ["WORD", "1"],
+["OPTION", "--action"], ["WORD", "build"], ["OPTION", "--tar"], ["OPTION", "--both"], ["OPTION", "--bldtype"], ["WORD", "final"], 
+["REDIRECT", "2>&1"], ["REDIRECT", ">"], ["WORD", "../build/tmp/d/d_b.l"], ["CMDSEP", ";"], ["FI", "fi"],
+["CMDSEP", ";"], ["FI", "fi"], ["CMDSEP", ";"], ["ID", "I_S_T"], ["ASSIGN", "="], ["BTQUOTED", "`date +%25s`"],
+["CMDSEP", ";"], ["WORD", "echo"], ["ECHO_STRING", "\"FOR I_S_T is ${I_S_T}\" "], ["CMDSEP", ";"],
+["WORD", "echo"], ["ECHO_STRING", "Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/a.done "],
+["CMDSEP", ";"], ["ID", "I_V_P"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["ID", "I_D_T"], ["ASSIGN", "="],
+["ID", "F_P_V"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["ID", "O_B"], ["ASSIGN", "="], ["VAL_STRING", "1"],
+["WORD", "../build/c.f/gi"], ["WORD", "i/f/a.done"], ["CMDSEP", ";"],
+["ID", "RET_VAL"], ["ASSIGN", "="], ["VARIABLE", "$?"], ["CMDSEP", ";"], ["ID", "I_E_T"], ["ASSIGN", "="], ["BTQUOTED", "`date +%25s`"],
+["CMDSEP", ";"], ["WORD", "echo"], ["ECHO_STRING", "\"FOR I_E_T is ${I_E_T}\""], ["CMDSEP", ";"],
+["WORD", "echo"], ["ECHO_STRING", "\"Call SIM Com\"  "], ["CMDSEP", ";"], ["IF", "if"], ["LBRACK", "["], ["DQSTRING", "\"\""],
+["BOOL_EQ", "=="], ["DQSTRING", "\"1\""], ["RBRACK", "]"], ["CMDSEP", ";"], ["THEN", "then"], ["ID", "S_J_O"], ["ASSIGN", "="],
+["DQSTRING", "\" -o t_i_t_1.json \""], ["CMDSEP", ";"], ["FI", "fi"], ["CMDSEP", ";"]]
+
+  let \
+\
+   \
+ X=1 ; if [ "" == "imaging" -o "" == "" ]; then \
+        if [[ -f "../build/tmp/d/kexports.h" ]] && \
+         (([[ "i_sup" == "p_l1" ]] || [[ "i/f/a.done" == *"p_l1" ]]) \
+         || ([[ "i_sup" == "nt_p_j1" ]] || [[ "i/f/a.done" == *"nt_p_j1" ]])); then \
+        echo Executing ../build/c.f/k_s.my --action create --verbose --k-s-lc lc --k-s-sup 1 --action build --both --tar --bldtype final ; \
+        if [ -f /r/b/moop ]; then \
+        /r/b/moop ../build/c.f/k_s.my --action create --verbose \
+        --k-s-lc lc --k-s-sup 1 \
+        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+        else \
+        moop ../build/c.f/k_s.my --action create --verbose \
+        --k-s-lc lc --k-s-sup 1 \
+        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+        fi ;\
+        fi ;\
+        I_S_T=`date +%25s` ; \
+                echo "FOR I_S_T is ${I_S_T}" ; \
+                echo Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/a.done ; \
+                I_V_P=1 I_D_T= F_P_V=1 O_B=1 ../build/c.f/gi i/f/a.done; \
+                RET_VAL=$? ; \
+                I_E_T=`date +%25s` ; \
+                echo "FOR I_E_T is ${I_E_T}"; \
+                echo "Call SIM Com"  ; \
+                if [ "" == "1" ] ; then \
+                    S_J_O=" -o t_i_t_1.json " ; \
+                fi ; \
+
+[["IF", "if"], ["LBRACK", "["], ["DQSTRING", "\"\\\"\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"imaging\""], ["OPTION", "-o"], ["DQSTRING", "\"\""], ["BOOL_EQ", "=="],
+["DQSTRING", "\"\""], ["RBRACK", "]"], ["CMDSEP", ";"], ["THEN", "then"], ["IF", "if"], ["LDBRACK", "[["], ["OPTION", "-f"],
+["DQSTRING", "\"../build/tmp/d/kexports.h\""], ["RDBRACK", "]]"], ["BOOL_AND", "&&"], ["LPAREN", "("], ["LPAREN", "("], ["LDBRACK", "[["],
+["DQSTRING", "\"i_sup\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"p_l1\""], ["RDBRACK", "]]"], ["BOOL_OR", "||"], ["LDBRACK", "[["],
+["DQSTRING", "\"i/f/a.done\""], ["BOOL_EQ", "=="], ["STAR", "*"], ["DQSTRING", "\"p_l1\""], ["RDBRACK", "]]"],
+["RPAREN", ")"], ["BOOL_OR", "||"], ["LPAREN", "("], ["LDBRACK", "[["], ["DQSTRING", "\"i_sup\""], ["BOOL_EQ", "=="], ["DQSTRING", "\"nt_p_j1\""],
+["RDBRACK", "]]"], ["BOOL_OR", "||"], ["LDBRACK", "[["], ["DQSTRING", "\"i/f/a.done\""], ["BOOL_EQ", "=="], ["STAR", "*"],
+["DQSTRING", "\"nt_p_j1\""], ["RDBRACK", "]]"], ["RPAREN", ")"], ["RPAREN", ")"], ["CMDSEP", ";"], ["THEN", "then"], ["WORD", "echo"],
+["ECHO_STRING", "\"Executing ../build/c.f/k_s.my --action create --verbose --k-s-lc lc --k-s-sup 1 --action build --both --tar --bldtype final\" "],
+["CMDSEP", ";"], ["IF", "if"], ["LBRACK", "["], ["OPTION", "-f"], ["WORD", "/r/b/moop"], ["RBRACK", "]"], ["CMDSEP", ";"],
+["THEN", "then"], ["WORD", "/r/b/moop"], ["WORD", "../build/c.f/k_s.my"], ["OPTION", "--action"], ["WORD", "create"],
+["OPTION", "--verbose"], ["OPTION", "--k-s-lc"], ["WORD", "lc"], ["OPTION", "--k-s-sup"], ["WORD", "1"], ["OPTION", "--action"], ["WORD", "build"],
+["OPTION", "--tar"], ["OPTION", "--both"], ["OPTION", "--bldtype"], ["WORD", "final"], ["REDIRECT", "2>&1"], ["REDIRECT", ">"],
+["WORD", "../build/tmp/d/d_b.l"], ["CMDSEP", ";"], ["ELSE", "else"], ["WORD", "moop"], ["WORD", "../build/c.f/k_s.my"],
+["OPTION", "--action"], ["WORD", "create"], ["OPTION", "--verbose"], ["OPTION", "--k-s-lc"], ["WORD", "lc"], ["OPTION", "--k-s-sup"],
+["WORD", "1"], ["OPTION", "--action"], ["WORD", "build"], ["OPTION", "--tar"], ["OPTION", "--both"], ["OPTION", "--bldtype"], ["WORD", "final"],
+["REDIRECT", "2>&1"], ["REDIRECT", ">"], ["WORD", "../build/tmp/d/d_b.l"], ["CMDSEP", ";"], ["FI", "fi"],
+["CMDSEP", ";"], ["FI", "fi"], ["CMDSEP", ";"], ["ID", "I_S_T"], ["ASSIGN", "="], ["BTQUOTED", "`date +%25s`"],
+["CMDSEP", ";"], ["WORD", "echo"], ["ECHO_STRING", "\"FOR I_S_T is ${I_S_T}\" "], ["CMDSEP", ";"], ["WORD", "echo"],
+["ECHO_STRING", "Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/a.done "],
+["CMDSEP", ";"], ["ID", "I_V_P"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["ID", "I_D_T"], ["ASSIGN", "="],
+["ID", "F_P_V"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["ID", "O_B"], ["ASSIGN", "="], ["VAL_STRING", "1"], ["WORD", "../build/c.f/gi"],
+["WORD", "i/f/a.done"], ["CMDSEP", ";"], ["ID", "RET_VAL"], ["ASSIGN", "="], ["VARIABLE", "$?"], ["CMDSEP", ";"],
+["ID", "I_E_T"], ["ASSIGN", "="], ["BTQUOTED", "`date +%25s`"], ["CMDSEP", ";"], ["WORD", "echo"],
+["ECHO_STRING", "\"FOR I_E_T is ${I_E_T}\""], ["CMDSEP", ";"], ["WORD", "echo"],
+["ECHO_STRING", "\"Call SIM Com\"  "], ["CMDSEP", ";"], ["IF", "if"], ["LBRACK", "["], ["DQSTRING", "\"\""], ["BOOL_EQ", "=="],
+["DQSTRING", "\"1\""], ["RBRACK", "]"], ["CMDSEP", ";"], ["THEN", "then"], ["ID", "S_J_O"], ["ASSIGN", "="],
+["DQSTRING", "\" -o t_i_t_1.json \""], ["CMDSEP", ";"], ["FI", "fi"], ["CMDSEP", ";"]]
+
+if [ "\"" == "imaging" -o "" == "" ]; then \
+        if [[ -f "../build/tmp/d/kexports.h" ]] && \
+         (([[ "i_sup" == "p_l1" ]] || [[ "i/f/a.done" == *"p_l1" ]]) \
+         || ([[ "i_sup" == "nt_p_j1" ]] || [[ "i/f/a.done" == *"nt_p_j1" ]])); then \
+        echo "Executing ../build/c.f/k_s.my --action create --verbose --k-s-lc lc --k-s-sup 1 --action build --both --tar --bldtype final" ; \
+        if [ -f /r/b/moop ]; then \
+        /r/b/moop ../build/c.f/k_s.my --action create --verbose \
+        --k-s-lc lc --k-s-sup 1 \
+        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+        else \
+        moop ../build/c.f/k_s.my --action create --verbose \
+        --k-s-lc lc --k-s-sup 1 \
+        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+        fi ;\
+        fi ;\
+        I_S_T=`date +%25s` ; \
+                echo "FOR I_S_T is ${I_S_T}" ; \
+                echo Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/a.done ; \
+                I_V_P=1 I_D_T= F_P_V=1 O_B=1 ../build/c.f/gi i/f/a.done; \
+                RET_VAL=$? ; \
+                I_E_T=`date +%25s` ; \
+                echo "FOR I_E_T is ${I_E_T}"; \
+                echo "Call SIM Com"  ; \
+                if [ "" == "1" ] ; then \
+                    S_J_O=" -o t_i_t_1.json " ; \
+                fi ; \
+
