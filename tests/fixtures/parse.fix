@@ -80,13 +80,13 @@ gcc 1>filename; gcc 2>filename; gcc  >filename ; gcc &>filename ; gcc >> filenam
 #         if [[ -f "../build/tmp/d/k_exports.h" ]] && \
 #          (([[ "i_sup" == "p_l1" ]] || [[ "i/f/f_t_c.d" == *"p_l1" ]]) \
 #          || ([[ "i_sup" == "nt_p_p1" ]] || [[ "i/f/f_t_c.d" == *"nt_p_p1" ]])); then \
-#         echo Executing ../build/c.f/k_symb.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final ; \
+#         echo Executing ../build/c.f/k_s.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final ; \
 #         if [ -f /r/b/moop ]; then \
-#         /r/b/moop ../build/c.f/k_symb.my --action create --verbose \
+#         /r/b/moop ../build/c.f/k_s.my --action create --verbose \
 #         --k-suffix-lc lc --k-suffix-sup 1 \
 #         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
 #         else \
-#         moop ../build/c.f/k_symb.my --action create --verbose \
+#         moop ../build/c.f/k_s.my --action create --verbose \
 #         --k-suffix-lc lc --k-suffix-sup 1 \
 #         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
 #         fi ;\
@@ -109,13 +109,13 @@ gcc 1>filename; gcc 2>filename; gcc  >filename ; gcc &>filename ; gcc >> filenam
 #         if [[ -f "../build/tmp/d/k_exports.h" ]] && \
 #          (([[ "i_sup" == "p_l1" ]] || [[ "i/f/f_t_c.d" == *"p_l1" ]]) \
 #          || ([[ "i_sup" == "nt_p_p1" ]] || [[ "i/f/f_t_c.d" == *"nt_p_p1" ]])); then \
-#         echo "Executing ../build/c.f/k_symb.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final" ; \
+#         echo "Executing ../build/c.f/k_s.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final" ; \
 #         if [ -f /r/b/moop ]; then \
-#         /r/b/moop ../build/c.f/k_symb.my --action create --verbose \
+#         /r/b/moop ../build/c.f/k_s.my --action create --verbose \
 #         --k-suffix-lc lc --k-suffix-sup 1 \
 #         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
 #         else \
-#         moop ../build/c.f/k_symb.my --action create --verbose \
+#         moop ../build/c.f/k_s.my --action create --verbose \
 #         --k-suffix-lc lc --k-suffix-sup 1 \
 #         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
 #         fi ;\
