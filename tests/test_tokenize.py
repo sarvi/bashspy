@@ -13,6 +13,8 @@ def fixture_loadtokenize(fixturefile):
     data = list()
     with open(fixturefile, 'r') as f:
         for line in f.readlines():
+            if line.startswith('#'):
+                continue
             if line.strip() !=  '':
                 data.append(line)
                 continue

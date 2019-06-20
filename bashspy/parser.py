@@ -4,9 +4,16 @@ Created on Jun 13, 2019
 @author: sarvi
 '''
 
-import sys
 from sly import Parser
-from .lexer import BashLexer, BashToken
+from .lexer import BashLexer
+
+
+class ASTCommands(list):
+    def __init__(self, command):
+        self.append(command)
+
+    def __repr__(self):
+        return '\n'.join([str(i) for i in self])
 
 
 class ASTCommand:
@@ -60,28 +67,109 @@ class ASTRedirection:
     def __repr__(self):
         return '%s%s'%(self.redirect,  self.file) if self.file else '%s'%(self.redirect)
 
+class ASTTestCombination:
+    __slots__ = ('leftexpr', 'comibination', 'rightexpr')
+
+    def __init__(self, combination, rightexpr, leftexpr=None):
+        self.test = combination
+        self.leftvalue = leftexpr
+
+    def __repr__(self):
+        return '%s %s %s'%(self.leftvalue, self.combination, self.rightvalue) if self.leftvalue  else '%s %s'%(self.combination, self.rightvalue)
+
+class ASTTestCondition:
+    __slots__ = ('leftvalue', 'test', 'rightvalue')
+
+    def __init__(self, test, rightvalue, leftvalue=None):
+        self.test = test
+        self.leftvalue = leftvalue
+        self.rightvalue = rightvalue
+
+    def __repr__(self):
+        return '%s %s %s'%(self.leftvalue, self.test, self.rightvalue) if self.leftvalue  else '%s %s'%(self.test, self.rightvalue)
+
+
+class ASTIfCommand:
+    __slots__ = ('test_commands', 'then_commands', 'else_commands')
+
+    def __init__(self, test_commands, then_commands, else_commands=None):
+        self.test_commands = test_commands
+        self.then_commands = then_commands
+        self.else_commands = else_commands
+
+    def __repr__(self):
+        if self.else_commands:
+            return 'if %s; then\n%s\nelse\n%s\nfi' % (self.test_commands, self.then_commands, self.else_commands)
+        else:
+            return 'if %s; then\n%s\nfi' % (self.test_commands, self.then_commands)
+
+
 class BashParser(Parser):
     # Get the token list from the lexer (required)
     tokens = BashLexer.tokens
 
     # Grammar rules and actions
     
-    @_('simple_commands')
+    @_('complex_commands')
     def program(self, p):
-        print('program(%s)' % (p.simple_commands))
-        return p.simple_commands
+        print('program(%s)' % (p.complex_commands))
+        return p.complex_commands
 
-    @_('simple_command',
-       'simple_command end_command',
-       'simple_command end_command simple_commands')
-    def simple_commands(self, p):
-#         print('simple_command(%s)' % (list(p)))
-        return [p.simple_command] if getattr(p, 'simple_commands', None) is None else [p.simple_command] + p.simple_commands
-    
+    @_('complex_command',
+       'complex_command end_command',
+       'complex_command end_command complex_commands')
+    def complex_commands(self, p):
+        if getattr(p, 'complex_commands', None):
+            p.complex_commands.insert(0, p.complex_command)
+            return p.complex_commands
+        else:
+            return ASTCommands(p.complex_command)
+
     @_('NEWLINE', 'CMDSEP')
     def end_command(self, p):
         return None
     
+    @_('end_command complex_command',
+       'simple_command',
+       'if_command')
+    def complex_command(self, p):
+#         print('simple_command(%s)' % (list(p)))
+        return getattr(p, 'simple_command', None) or getattr(p, 'complex_command', None) or getattr(p, 'if_command', None)
+
+    @_('IF test_commands CMDSEP THEN complex_commands FI')
+    @_('IF test_commands CMDSEP THEN complex_commands ELSE complex_commands FI')
+    def if_command(self, p):
+        if getattr(p, 'complex_commands', None):
+            return ASTIfCommand(p.test_commands, p.complex_commands) 
+        else:
+            return ASTIfCommand(p.test_commands, p.complex_commands0,  p.complex_commands1) 
+
+    @_('test_command',
+       'BOOL_NOT test_commands',
+       'test_command boolean_combination test_commands')
+    def test_commands(self, p):
+        boolop = getattr(p, 'BOOL_NOT', None) or getattr(p, 'boolean_combination', None)
+        return ASTTestCombination(p.boolean_combination, boolop, getattr(p, 'test_commands', None)) if boolop else p.test_command
+
+    @_('BOOL_OR', 'BOOL_AND')
+    def boolean_combination(self, p):
+        return p[0]
+
+    @_('command_pipe',
+       'LBRACK value boolean_comparison value RBRACK',
+       'LDBRACK value boolean_comparison value RDBRACK',
+       'LBRACK OPTION value RBRACK',
+       'LDBRACK OPTION value RDBRACK')
+    def test_command(self, p):
+        if getattr(p, 'OPTION', None):
+            return ASTTestCondition(p.boolean_comparison, p.value)
+        else:
+            return ASTTestCondition(p.boolean_comparison, p.value1, p.value0)
+
+    @_('OPTION', 'BOOL_EQ', 'BOOL_NEQ', 'BOOL_LESS', 'BOOL_GREATER', 'ASSIGN')
+    def boolean_comparison(self, p):
+        return p[0]
+
     @_('assignments',
        'assignments command_pipe',
        'command_pipe')
@@ -91,14 +179,15 @@ class BashParser(Parser):
         command.assignments.extend(getattr(p, 'assignments',  []))
         return command
 
-    @_('command',
+    @_('echo_command',
+       'command',
        'command PIPE command_pipe')
     def command_pipe(self, p):
 #         print('simple_command(%s)' % (list(p)))
         topipe = getattr(p, 'command_pipe', None)
         if topipe:
             p.command.pipetocmd = topipe
-        return p.command
+        return getattr(p, 'command', None) or getattr(p, 'echo_command', None)
 
 #     @_(
 #        'for_command',
@@ -118,13 +207,14 @@ class BashParser(Parser):
 #         return list(p)
 
 
+    @_('ECHO  ECHO_STRING')
+    def echo_command(self, p):
+        return ASTCommand(p[0], None, [p[1]])
+
     @_('WORD',
        'WORD arguments',
        'WORD redirects',
        'WORD arguments redirects')
-#        'WORD arguments',
-#        'WORD redirects',
-#        'WORD arguments redirects')
     def command(self, p):
         return ASTCommand(p[0], None, getattr(p, 'arguments', None), getattr(p, 'redirects', None))
 

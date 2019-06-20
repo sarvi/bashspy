@@ -6,7 +6,6 @@ Created on May 13, 2019
 import json
 import unittest
 from parameterized import parameterized_class
-from bashspy import parser
 from bashspy.lexer import BashLexer
 from bashspy.parser import BashParser
 
@@ -26,7 +25,7 @@ def fixture_loadparse(fixturefile):
                 continue
             if not tcase:
                 try:
-                    tcase.append(json.loads(''.join(data)))
+                    tcase.append(''.join(data))
                 except json.decoder.JSONDecodeError:
                     print('Error parsing Jsob object in text fixtures: %s'%(''.join(data)))
                     raise
@@ -56,7 +55,7 @@ class TestParseCmds(unittest.TestCase):
         lexer = BashLexer()
         parser = BashParser()
         result = parser.parse(lexer.tokenize(self.command))
-        self.assertEqual(self.parsed_command, [str(i) for i in result])
+        self.assertEqual(self.parsed_command.strip(), str(result).strip())
 #         errmsg = 'Length expected=%d, got=%s\nTokens:\nexpected:\n%s\ngot:\n%s\n' % (
 #             len(self.tokens), len(lexer._token_list),
 #             json.dumps(self.tokens),

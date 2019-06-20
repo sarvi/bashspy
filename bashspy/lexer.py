@@ -43,11 +43,11 @@ lex.Token = BashToken
 class BashLexer(Lexer):
     # Set of token names.   This is always required
     tokens = { QSTRING, DQSTRING, ECHO_STRING, BTQUOTED,
-               ID, WHILE, IF, THEN, ELSE, FI,
-               WHILE, DONE, DO, FOR, PRINT, LET,
+               ID, WHILE, IF, THEN, ELSE, FI, ECHO,
+               WHILE, DONE, DO, FOR, LET,
                REDIRECT,
                CMD_EXP, VAR_SUBST, VARIABLE, VAL_STRING, OPTION, WORD,
-               BOOL_AND, BOOL_OR, BOOL_EQ, STAR,
+               BOOL_AND, BOOL_OR, BOOL_EQ, STAR, BOOL_NEQ, BOOL_LESS, BOOL_GREATER, BOOL_NEQ, BOOL_NOT,
                ASSIGN, LDBRACK, LPAREN, RDBRACK, LBRACK, RBRACK, RPAREN,
                PIPE, CMDSEP, NEWLINE}
 
@@ -71,7 +71,8 @@ class BashLexer(Lexer):
     WHILE = r'(?<=\b)while(?=\b)'
     DONE = r'(?<=\b)done(?=\b)'
     DO = r'(?<=\b)do(?=\b)'
-    PRINT = r'(?<=\b)print(?=\b)'
+    ECHO = r'(?<=\b)echo(?=\b)'
+#    PRINT = r'(?<=\b)print(?=\b)'
     LET = r'(?<=\b)let(?=\b)'
 
     # Identifiers and keywords
@@ -85,6 +86,9 @@ class BashLexer(Lexer):
     BOOL_AND       = r'&&'
     BOOL_OR        = r'\|\|'
     BOOL_EQ        = r'=='
+    BOOL_NEQ       = r'!='
+    BOOL_LESS      = r'<'
+    BOOL_GREATER   = r'>'
     LPAREN         = r'\('
     RPAREN         = r'\)'
     LDBRACK        = r'\[\['
@@ -95,6 +99,7 @@ class BashLexer(Lexer):
     PIPE           = r'\|'
     STAR           = r'\*'
     CMDSEP         = r';'
+    BOOL_NOT       = r'!'
 
     # Line number tracking
     @_(r'\n+')
