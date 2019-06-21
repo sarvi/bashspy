@@ -68,14 +68,26 @@ class ASTRedirection:
         return '%s%s'%(self.redirect,  self.file) if self.file else '%s'%(self.redirect)
 
 class ASTTestCombination:
-    __slots__ = ('leftexpr', 'comibination', 'rightexpr')
+    __slots__ = ('leftexpr', 'combination', 'rightexpr', 'test_command', 'group')
 
-    def __init__(self, combination, rightexpr, leftexpr=None):
-        self.test = combination
-        self.leftvalue = leftexpr
+    def __init__(self, combination, rightexpr, leftexpr=None, test_command=False, group=False):
+        self.combination = combination
+        self.rightexpr  = rightexpr
+        self.leftexpr = leftexpr
+        self.test_command = test_command
+        self.group = group
 
     def __repr__(self):
-        return '%s %s %s'%(self.leftvalue, self.combination, self.rightvalue) if self.leftvalue  else '%s %s'%(self.combination, self.rightvalue)
+        if self.leftexpr:
+            return '%s %s %s'%(self.leftexpr, self.combination, self.rightexpr)
+        elif self.combination:
+            return '%s %s'%(self.combination, self.rightexpr)
+        elif self.test_command:
+            return '[ %s ]'%(self.rightexpr)
+        elif self.group:
+            return '( %s )'%(self.rightexpr)
+        else:
+            return '%s'%(self.rightexpr)
 
 class ASTTestCondition:
     __slots__ = ('leftvalue', 'test', 'rightvalue')
@@ -86,7 +98,10 @@ class ASTTestCondition:
         self.rightvalue = rightvalue
 
     def __repr__(self):
-        return '%s %s %s'%(self.leftvalue, self.test, self.rightvalue) if self.leftvalue  else '%s %s'%(self.test, self.rightvalue)
+        if self.test:
+            return '%s %s %s'%(self.leftvalue, self.test, self.rightvalue) if self.leftvalue  else '%s %s'%(self.test, self.rightvalue)
+        else:
+            return '%s' % (self.rightvalue)            
 
 
 class ASTIfCommand:
@@ -145,23 +160,55 @@ class BashParser(Parser):
             return ASTIfCommand(p.test_commands, p.complex_commands0,  p.complex_commands1) 
 
     @_('test_command',
-       'BOOL_NOT test_commands',
        'test_command boolean_combination test_commands')
     def test_commands(self, p):
-        boolop = getattr(p, 'BOOL_NOT', None) or getattr(p, 'boolean_combination', None)
-        return ASTTestCombination(p.boolean_combination, boolop, getattr(p, 'test_commands', None)) if boolop else p.test_command
+        if getattr(p, 'boolean_combination', None):
+            return ASTTestCombination(p.boolean_combination, p.test_commands, p.test_command)
+        else:
+            return p.test_command
 
     @_('BOOL_OR', 'BOOL_AND')
     def boolean_combination(self, p):
         return p[0]
 
     @_('command_pipe',
-       'LBRACK value boolean_comparison value RBRACK',
-       'LDBRACK value boolean_comparison value RDBRACK',
-       'LBRACK OPTION value RBRACK',
-       'LDBRACK OPTION value RDBRACK')
+       'BOOL_NOT command_pipe',
+       'LBRACK test_expressions RBRACK',
+       'LDBRACK test_expressions RDBRACK')
     def test_command(self, p):
-        if getattr(p, 'OPTION', None):
+        if getattr(p, 'BOOL_NOT', None):
+            return ASTTestCombination(p.BOOL_NOT, p.command_pipe)
+        elif getattr(p, 'command_pipe', None):
+            return ASTTestCombination(None, p.command_pipe)
+        else:
+            return ASTTestCombination(None, p.test_expressions, test_command=True)
+
+
+    @_('test_expression',
+       'BOOL_NOT test_expressions',
+       'LPAREN test_expressions RPAREN',
+       'test_expression boolean_combination test_expressions')
+    def test_expressions(self, p):
+        if getattr(p, 'BOOL_NOT', None):
+            return  ASTTestCombination(p.BOOL_NOT, p.test_expressions)
+        elif getattr(p, 'boolean_combination', None):
+            return ASTTestCombination(p.boolean_combination, p.test_expressions, p.test_expression)
+        elif getattr(p, 'LPAREN', None):
+            return ASTTestCombination(None, p.test_expressions, group=True)
+        else:
+            return p.test_expression
+
+
+    @_('BOOL_NOT test_expression',
+       'LPAREN test_expressions RPAREN',
+       'value boolean_comparison value',
+       'OPTION value')
+    def test_expression(self, p):
+        if getattr(p, 'BOOL_NOT', None):
+            return  ASTTestCombination(p.BOOL_NOT, p.test_expression)
+        elif getattr(p, 'LPAREN', None):
+            return ASTTestCombination(None, p.test_expressions, group=True)
+        elif getattr(p, 'OPTION', None):
             return ASTTestCondition(p.boolean_comparison, p.value)
         else:
             return ASTTestCondition(p.boolean_comparison, p.value1, p.value0)
@@ -234,7 +281,7 @@ class BashParser(Parser):
     def arguments(self, p):
         return [p.argument] if len(p)==1 else [p.argument] + p.arguments
     
-    @_('OPTION ASSIGN arg_value', 'OPTION', 'arg_value')
+    @_('OPTION ASSIGN', 'OPTION', 'arg_value')
     def argument(self, p):
 #         print('assignment(%s)' % (list(p)))
         return ASTArgument(getattr(p, 'OPTION', None), getattr(p, 'arg_value', None))

@@ -55,7 +55,15 @@ echo "S1('$S1') is not equal to S2('$S2')"
 echo "S1('$S1') is not equal to S2('$S2')"
 
 # Expected
-if $S1 = $S2; then
+if [ ( $S1 = $S2 ) ] && [ ! ( ( $S5 == $S6 ) ) ]; then
+echo something
+fi
+
+# Test code
+if [ ($S1=$S2) ] && [ !(($S5 == $S6)) ]; then echo something ; fi
+
+# Expected
+if [ $S1 = $S2 ]; then
 echo "S1('$S1') is not equal to S2('$S2')"
 echo "S1('$S1') is not equal to S2('$S2')"
 fi
@@ -67,7 +75,7 @@ if [ $S1=$S2 ]; then
 fi
 
 # Expected
-if $S1 = $S2; then
+if [ $S1 = $S2 ]; then
 echo "S1('$S1') is not equal to S2('$S2')"
 echo "S1('$S1') is not equal to S2('$S2')"
 else
@@ -84,66 +92,95 @@ else
     echo "S1('$S1') is not equal to S2('$S2')"
 fi
 
-# []
-# 
-# gcc --opt= value arg1 arg2
-# 
-# []
-# 
-# PWD= PLATFORM=platform2 
-# 
-# []
-# 
-# PWD=$(pwd something) PLATFORM=platform2
-# 
-# []
-# 
-# PWD=${var1 - var2} PLATFORM=platform2
-# 
-# []
-# 
-# PWD=codebase/ PLATFORM=platform2 /a/b/c/d/e/x86_64_cge6/toolchain/x86_64-com-linux-cc -m64 -fPIC --sysroot=/a/b/c/d/e/sysroot-x86_64_cge6 -MD -MP -MT comp_a/mm/obj-x86_64_cge6/src/mm_ii.o -MF comp_a/mm/obj-x86_64_cge6/src/mm_ii.d  -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/x86_64_cge6/usr/codebase/include/os -I./e/x86_64_cge6/usr/codebase/include -isystem ./e/x86_64_cge6/usr/include -isystem ./e/sysroot-x86_64_cge6/usr/include/libxml2 -isystem ./e/sysroot-x86_64_cge6/usr/include  -I./e/x86_64_cge6/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-x86_64_cge6/src/mm_ii.o
-# 
-# []
-# 
-# PWD=codebase/ PLATFORM=platform1 /a/b/c/d/e/mips64_cge7/toolchain/mips64-com-linux-cc -mabi=64 -march=octeon -D__MIPS__ -mxgot -msoft-float -fasynchronous-unwind-tables -shared-libgcc -march=octeon -fPIC --sysroot=/a/b/c/d/e/sysroot-mips64_cge7 -MD -MP -MT comp_a/mm/obj-mips64_cge7/src/mm_ii.o -MF comp_a/mm/obj-mips64_cge7/src/mm_ii.d  -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/mips64_cge7/usr/codebase/include/os -I./e/mips64_cge7/usr/codebase/include -isystem ./e/mips64_cge7/usr/include -isystem ./e/sysroot-mips64_cge7/usr/include/libxml2 -isystem ./e/sysroot-mips64_cge7/usr/include  -I./e/mips64_cge7/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-mips64_cge7/src/mm_ii.o
-# 
-# []
-# 
-# ARCH=x86e  x86_64-w-linux-gcc -DL_D_P=  -DM_A_V=17 -std=gnu99 -D_GLIBCXX_USE_CXX11_ABI=0 -I../comp-sw/include -I../comp-sw/include/pre-os -I../comp-sw/include/pre-os/x86e -I../include -I../include/dcos -I../comp-sw/include/post-os -I../comp-sw/include/kernel -I../feature/fhrp -I ins/x86e/final/f/sup/internal_inc/ -I ../feature/f/enumlib/internal_inc -I ../include/xlib/include -I ../feature/f/nx/genlib/ -I ../feature/f/genlib/ -I ins/x86e/final/f/sup/macdb/internal_inc/ -I ins/x86e/final/f/sup/macdb/include/ -I ins/x86e/ff/gg/hh/ii/internal_inc/ -I ins/x86e/ff/gg/hh/ii/include/ -I ins/x86e/final/f/sup/v/internal_inc/ -I ins/x86e/final/f/sup/v/include/ -I ins/x86e/final/f/sup/v/src/ -I ../include/is/od -I ../include/dcos/od -I../feature/f/src -Iins/x86e/final/sup/include/cli -I../feature/codebase2_config/ins -I../feature/codebase2_config/ins/x86e -I../feature/codebase2_config/ins/x86e/sup -I../third-party/bin/x86s/openssl/a-f/include -include "o_map.h" -DNDEBUG -DFINAL -DL_D_P=  -D__dcos__ -D__linux__ -D__EXCLUDE_SNMP__ -D__X_LINUX__  -DA_H_V -DM_A_V=17 -Wall -g -MP -pipe    -fno-omit-frame-pointer --sysroot=/a/p/r_c/wr-x86/8/sysroots/C-M-1/sysroots/corei7-64-xs-linux -Wall -Werror -std=gnu99 -fno-omit-frame-pointer -Wno-pointer-sign -fgnu89-inline -fno-strict-aliasing -march=corei7 -m32 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -pthread -Wno-error=unused-but-set-variable -DH_R_T -DINS_GLOB_CONST -D_GLIBCXX_USE_CXX11_ABI=0 -Wno-error=implicit-function-declaration -Wno-error=switch -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wno-error=unused-variable -Wno-error=unused-function -Wno-error=maybe-uninitialized -Wno-unused-parameter -Wno-uninitialized -Wno-ignored-qualifiers    -DTARGET_NX -DFHRP_NX_SHIM_V2 -D__X_LINUX__ -DHAVE_SYS_EL_H -D__DCOS__ -O1 -Wno-error=enum-compare -Werror -DFI_C_FILE -O0 -rdynamic   -fPIC -DPIC -U_IO_MS_IO  -c -MMD -MT ins/x86e/final/f/sup/src/f_d.lo -MF "ins/x86e/final/f/sup/src/f_d.ld" -o ins/x86e/final/f/sup/src/f_d.lo ../feature/f/src/f_d.c
-# 
-# []
+# Expected
+gcc --opt value arg1 arg2
+
+# Test code
+gcc --opt= value arg1 arg2
+
+# Expected
+PWD= PLATFORM=platform2 
+
+# Test code
+PWD= PLATFORM=platform2 
+
+# Expected
+PWD=$(pwd something) PLATFORM=platform2
+
+# Test code
+PWD=$(pwd something) PLATFORM=platform2
+
+# Expected
+PWD=${var1 - var2} PLATFORM=platform2
+
+# Test code
+PWD=${var1 - var2} PLATFORM=platform2
+
+# Expected
+PWD=codebase/ PLATFORM=platform2 /a/b/c/d/e/x86_64_cge6/toolchain/x86_64-com-linux-cc -m64 -fPIC --sysroot /a/b/c/d/e/sysroot-x86_64_cge6 -MD -MP -MT comp_a/mm/obj-x86_64_cge6/src/mm_ii.o -MF comp_a/mm/obj-x86_64_cge6/src/mm_ii.d -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I ./e/x86_64_cge6/usr/codebase/include/os -I ./e/x86_64_cge6/usr/codebase/include -isystem ./e/x86_64_cge6/usr/include -isystem ./e/sysroot-x86_64_cge6/usr/include/libxml2 -isystem ./e/sysroot-x86_64_cge6/usr/include -I ./e/x86_64_cge6/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-x86_64_cge6/src/mm_ii.o
+
+# Test code
+PWD=codebase/ PLATFORM=platform2 /a/b/c/d/e/x86_64_cge6/toolchain/x86_64-com-linux-cc -m64 -fPIC --sysroot=/a/b/c/d/e/sysroot-x86_64_cge6 -MD -MP -MT comp_a/mm/obj-x86_64_cge6/src/mm_ii.o -MF comp_a/mm/obj-x86_64_cge6/src/mm_ii.d  -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/x86_64_cge6/usr/codebase/include/os -I./e/x86_64_cge6/usr/codebase/include -isystem ./e/x86_64_cge6/usr/include -isystem ./e/sysroot-x86_64_cge6/usr/include/libxml2 -isystem ./e/sysroot-x86_64_cge6/usr/include  -I./e/x86_64_cge6/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-x86_64_cge6/src/mm_ii.o
+
+# Expected
+PWD=codebase/ PLATFORM=platform1 /a/b/c/d/e/mips64_cge7/toolchain/mips64-com-linux-cc -mabi 64 -march octeon -D__MIPS__ -mxgot -msoft-float -fasynchronous-unwind-tables -shared-libgcc -march octeon -fPIC --sysroot /a/b/c/d/e/sysroot-mips64_cge7 -MD -MP -MT comp_a/mm/obj-mips64_cge7/src/mm_ii.o -MF comp_a/mm/obj-mips64_cge7/src/mm_ii.d -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I ./e/mips64_cge7/usr/codebase/include/os -I ./e/mips64_cge7/usr/codebase/include -isystem ./e/mips64_cge7/usr/include -isystem ./e/sysroot-mips64_cge7/usr/include/libxml2 -isystem ./e/sysroot-mips64_cge7/usr/include -I ./e/mips64_cge7/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-mips64_cge7/src/mm_ii.o
+
+# Test code
+PWD=codebase/ PLATFORM=platform1 /a/b/c/d/e/mips64_cge7/toolchain/mips64-com-linux-cc -mabi=64 -march=octeon -D__MIPS__ -mxgot -msoft-float -fasynchronous-unwind-tables -shared-libgcc -march=octeon -fPIC --sysroot=/a/b/c/d/e/sysroot-mips64_cge7 -MD -MP -MT comp_a/mm/obj-mips64_cge7/src/mm_ii.o -MF comp_a/mm/obj-mips64_cge7/src/mm_ii.d -D__BINOS__ -D__C_SOURCE__ -D_YOCTO_SDK_ -O3 -gdwarf-2 -g3 -fPIC -I./e/mips64_cge7/usr/codebase/include/os -I./e/mips64_cge7/usr/codebase/include -isystem ./e/mips64_cge7/usr/include -isystem ./e/sysroot-mips64_cge7/usr/include/libxml2 -isystem ./e/sysroot-mips64_cge7/usr/include -I./e/mips64_cge7/usr/codebase/include -c comp_a/mm/src/mm_ii.c -o comp_a/mm/obj-mips64_cge7/src/mm_ii.o
+
+# Expected
+ARCH=x86e x86_64-w-linux-gcc -DL_D_P -DM_A_V 17 -std gnu99 -D_GLIBCXX_USE_CXX11_ABI 0 -I ../comp-sw/include -I ../comp-sw/include/pre-os -I ../comp-sw/include/pre-os/x86e -I ../include -I ../include/dcos -I ../comp-sw/include/post-os -I ../comp-sw/include/kernel -I ../feature/fhrp -I ins/x86e/final/f/sup/internal_inc/ -I ../feature/f/enumlib/internal_inc -I ../include/xlib/include -I ../feature/f/nx/genlib/ -I ../feature/f/genlib/ -I ins/x86e/final/f/sup/macdb/internal_inc/ -I ins/x86e/final/f/sup/macdb/include/ -I ins/x86e/ff/gg/hh/ii/internal_inc/ -I ins/x86e/ff/gg/hh/ii/include/ -I ins/x86e/final/f/sup/v/internal_inc/ -I ins/x86e/final/f/sup/v/include/ -I ins/x86e/final/f/sup/v/src/ -I ../include/is/od -I ../include/dcos/od -I ../feature/f/src -Iins /x86e/final/sup/include/cli -I ../feature/codebase2_config/ins -I ../feature/codebase2_config/ins/x86e -I ../feature/codebase2_config/ins/x86e/sup -I ../third-party/bin/x86s/openssl/a-f/include -include "o_map.h" -DNDEBUG -DFINAL -DL_D_P -D__dcos__ -D__linux__ -D__EXCLUDE_SNMP__ -D__X_LINUX__ -DA_H_V -DM_A_V 17 -Wall -g -MP -pipe -fno-omit-frame-pointer --sysroot /a/p/r_c/wr-x86/8/sysroots/C-M-1/sysroots/corei7-64-xs-linux -Wall -Werror -std gnu99 -fno-omit-frame-pointer -Wno-pointer-sign -fgnu89-inline -fno-strict-aliasing -march corei7 -m32 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -pthread -Wno-error unused-but-set-variable -DH_R_T -DINS_GLOB_CONST -D_GLIBCXX_USE_CXX11_ABI 0 -Wno-error implicit-function-declaration -Wno-error switch -Wno-error unused-but-set-variable -Wno-error deprecated-declarations -Wno-error unused-variable -Wno-error unused-function -Wno-error maybe-uninitialized -Wno-unused-parameter -Wno-uninitialized -Wno-ignored-qualifiers -DTARGET_NX -DFHRP_NX_SHIM_V2 -D__X_LINUX__ -DHAVE_SYS_EL_H -D__DCOS__ -O1 -Wno-error enum-compare -Werror -DFI_C_FILE -O0 -rdynamic -fPIC -DPIC -U_IO_MS_IO -c -MMD -MT ins/x86e/final/f/sup/src/f_d.lo -MF "ins/x86e/final/f/sup/src/f_d.ld" -o ins/x86e/final/f/sup/src/f_d.lo ../feature/f/src/f_d.c 
+
+# Test code
+ARCH=x86e  x86_64-w-linux-gcc -DL_D_P= -DM_A_V=17 -std=gnu99 -D_GLIBCXX_USE_CXX11_ABI=0 -I../comp-sw/include -I../comp-sw/include/pre-os -I../comp-sw/include/pre-os/x86e -I../include -I../include/dcos -I../comp-sw/include/post-os -I../comp-sw/include/kernel -I../feature/fhrp -I ins/x86e/final/f/sup/internal_inc/ -I ../feature/f/enumlib/internal_inc -I ../include/xlib/include -I ../feature/f/nx/genlib/ -I ../feature/f/genlib/ -I ins/x86e/final/f/sup/macdb/internal_inc/ -I ins/x86e/final/f/sup/macdb/include/ -I ins/x86e/ff/gg/hh/ii/internal_inc/ -I ins/x86e/ff/gg/hh/ii/include/ -I ins/x86e/final/f/sup/v/internal_inc/ -I ins/x86e/final/f/sup/v/include/ -I ins/x86e/final/f/sup/v/src/ -I ../include/is/od -I ../include/dcos/od -I../feature/f/src -Iins/x86e/final/sup/include/cli -I../feature/codebase2_config/ins -I../feature/codebase2_config/ins/x86e -I../feature/codebase2_config/ins/x86e/sup -I../third-party/bin/x86s/openssl/a-f/include -include "o_map.h" -DNDEBUG -DFINAL -DL_D_P=  -D__dcos__ -D__linux__ -D__EXCLUDE_SNMP__ -D__X_LINUX__  -DA_H_V -DM_A_V=17 -Wall -g -MP -pipe    -fno-omit-frame-pointer --sysroot=/a/p/r_c/wr-x86/8/sysroots/C-M-1/sysroots/corei7-64-xs-linux -Wall -Werror -std=gnu99 -fno-omit-frame-pointer -Wno-pointer-sign -fgnu89-inline -fno-strict-aliasing -march=corei7 -m32 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -pthread -Wno-error=unused-but-set-variable -DH_R_T -DINS_GLOB_CONST -D_GLIBCXX_USE_CXX11_ABI=0 -Wno-error=implicit-function-declaration -Wno-error=switch -Wno-error=unused-but-set-variable -Wno-error=deprecated-declarations -Wno-error=unused-variable -Wno-error=unused-function -Wno-error=maybe-uninitialized -Wno-unused-parameter -Wno-uninitialized -Wno-ignored-qualifiers    -DTARGET_NX -DFHRP_NX_SHIM_V2 -D__X_LINUX__ -DHAVE_SYS_EL_H -D__DCOS__ -O1 -Wno-error=enum-compare -Werror -DFI_C_FILE -O0 -rdynamic   -fPIC -DPIC -U_IO_MS_IO  -c -MMD -MT ins/x86e/final/f/sup/src/f_d.lo -MF "ins/x86e/final/f/sup/src/f_d.ld" -o ins/x86e/final/f/sup/src/f_d.lo ../feature/f/src/f_d.c
+
+# Expected
+X=1
+if [ ( ! ( "" == "imaging" || $(xyz -x something) == `xyz -x something` ) ) || ${xyz} == "imaging" && ! ( "" == "" ) ] && [ "something" != "else" ] || ! grep -x something; then
+echo "hello"
+fi
+
+# Test code
+  let \
+\
+   \
+ X=1
+if [ ( ! (  "" == "imaging" || $(xyz -x something) == `xyz -x something` ) ) ||  ${xyz} == "imaging" && ! ( "" == "" ) ] && [[ "something" != "else" ]] || ! grep -x something; then \
+echo "hello"
+fi
+
+# n
 # 
 #   let \
 # \
 #    \
-#  X=1 ; if [ "" == "imaging" -o "" == "" ]; then \
-#         if [[ -f "../build/tmp/d/k_exports.h" ]] && \
-#          (([[ "i_sup" == "p_l1" ]] || [[ "i/f/f_t_c.d" == *"p_l1" ]]) \
-#          || ([[ "i_sup" == "nt_p_p1" ]] || [[ "i/f/f_t_c.d" == *"nt_p_p1" ]])); then \
-#         echo Executing ../build/c.f/k_s.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final ; \
-#         if [ -f /r/b/moop ]; then \
-#         /r/b/moop ../build/c.f/k_s.my --action create --verbose \
-#         --k-suffix-lc lc --k-suffix-sup 1 \
-#         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
-#         else \
-#         moop ../build/c.f/k_s.my --action create --verbose \
-#         --k-suffix-lc lc --k-suffix-sup 1 \
-#         --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
-#         fi ;\
-#         fi ;\
-#         I_S_T=`date +%25s` ; \
-#                 echo "FOR I_S_T is ${I_S_T}" ; \
-#                 echo Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/f_t_c.d ; \
-#                 I_V_P=1 I_D_T= F_P_V=1 O_B=1 ../build/c.f/gi i/f/f_t_c.d; \
-#                 RET_VAL=$? ; \
-#                 I_E_T=`date +%25s` ; \
-#                 echo "FOR I_E_T is ${I_E_T}"; \
-#                 echo "Call SIM Com"  ; \
-#                 if [ "" == "1" ] ; then \
-#                     S_J_O=" -o t_i_t_1.json " ; \
-#                 fi ; \
-# 
+#  X=1 ; if [ ("" == "imaging") && ("" == "") ]; then \
+#        if [[ -f "../build/tmp/d/k_exports.h" ]] && \
+#         (([[ "i_sup" == "p_l1" ]] || [[ "i/f/f_t_c.d" == *"p_l1" ]]) \
+#         || ([[ "i_sup" == "nt_p_p1" ]] || [[ "i/f/f_t_c.d" == *"nt_p_p1" ]])); then \
+#        echo Executing ../build/c.f/k_s.my --action create --verbose --k-suffix-lc lc --k-suffix-sup 1 --action build --both --tar --bldtype final ; \
+#        if [ -f /r/b/moop ]; then \
+#        /r/b/moop ../build/c.f/k_s.my --action create --verbose \
+#        --k-suffix-lc lc --k-suffix-sup 1 \
+#        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+#        else \
+#        moop ../build/c.f/k_s.my --action create --verbose \
+#        --k-suffix-lc lc --k-suffix-sup 1 \
+#        --action build --tar --both --bldtype final 2>&1 >../build/tmp/d/d_b.l;\
+#        fi ;\
+#        fi ;\
+#        I_S_T=`date +%25s` ; \
+#                echo "FOR I_S_T is ${I_S_T}" ; \
+#                echo Executing Imaging script: I_V_P=1 I_D_T= O_B=1 ../build/c.f/gi i/f/f_t_c.d ; \
+#                I_V_P=1 I_D_T= F_P_V=1 O_B=1 ../build/c.f/gi i/f/f_t_c.d; \
+#                RET_VAL=$? ; \
+#                I_E_T=`date +%25s` ; \
+#                echo "FOR I_E_T is ${I_E_T}"; \
+#                echo "Call SIM Com"  ; \
+#                if [ "" == "1" ] ; then \
+#                    S_J_O=" -o t_i_t_1.json " ; \
+#                fi ; \
+#
 # []
 # 
 # if [ "\"" == "imaging" -o "" == "" ]; then \

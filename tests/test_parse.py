@@ -12,6 +12,7 @@ from bashspy.parser import BashParser
 def fixture_loadparse(fixturefile):
     tcase = list()
     data = list()
+    idx = 0
     with open(fixturefile, 'r') as f:
         for line in f.readlines():
             if line.startswith('#'):
@@ -31,7 +32,8 @@ def fixture_loadparse(fixturefile):
                     raise
             elif len(tcase) == 1:
                 tcase.append(''.join(data))
-                yield tuple(tcase)
+                yield tuple([idx]+tcase)
+                idx = idx + 1
                 tcase = list()
             else:
                 raise Exception('Incorrect number of entries in test case data')
@@ -39,7 +41,7 @@ def fixture_loadparse(fixturefile):
     return
 
 
-@parameterized_class(('parsed_command', 'command'), list(fixture_loadparse('tests/fixtures/parse.fix')))
+@parameterized_class(('index', 'parsed_command', 'command'), list(fixture_loadparse('tests/fixtures/parse.fix')))
 class TestParseCmds(unittest.TestCase):
 
     def setUp(self):
@@ -51,7 +53,7 @@ class TestParseCmds(unittest.TestCase):
         pass
 
     def testParseCmds(self):
-        print('Original Command:\n%sParsed Out:\n%s' % (self.command, self.parsed_command))
+        print('\nTest Case: testParseCmds_%d\nOriginal Command:\n%s\nParsed Out:\n%s' % (self.index, self.command, self.parsed_command))
         lexer = BashLexer()
         parser = BashParser()
         result = parser.parse(lexer.tokenize(self.command))
