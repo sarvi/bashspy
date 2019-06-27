@@ -46,10 +46,10 @@ class BashLexer(Lexer):
                ID, WHILE, IF, THEN, ELSE, FI, ECHO,
                WHILE, DONE, DO, FOR, LET,
                REDIRECT,
-               CMD_EXP, VAR_SUBST, VARIABLE, VAL_STRING, OPTION, WORD,
+               CMD_EXP, VAR_SUBST, VARIABLE, VAL_STRING, OPTION, TIME_OPTP, WORD, TIME,
                BOOL_AND, BOOL_OR, BOOL_EQ, STAR, BOOL_NEQ, BOOL_LESS, BOOL_GREATER, BOOL_NEQ, BOOL_NOT,
-               ASSIGN, LDBRACK, LPAREN, RDBRACK, LBRACK, RBRACK, RPAREN,
-               PIPE, CMDSEP, NEWLINE}
+               ARITH_ASSIGN, ASSIGN, LDBRACK, LPAREN, RDBRACK, LBRACK, RBRACK, RPAREN, LBRACE, RBRACE,
+               PIPE, CMDSEP, NEWLINE, AMPERSAND}
 
 
     # Regular expression rules for tokens
@@ -81,7 +81,10 @@ class BashLexer(Lexer):
     REDIRECT       = r'(\[[0-9a-z]\]|[&]?|[0-9a-z]*)(>>|<>|<|>)(&([\-]|[0-9a-z]))?'
 
     OPTION = r'(?<!=)[\-][a-zA-Z0-9_\-]+'
+    OPTION['-p']   = TIME_OPTP
+
     WORD = r'(?<!=)[a-zA-Z0-9_\/\-\.]+(?!=<|>)'
+    WORD['time']   = TIME
 
     BOOL_AND       = r'&&'
     BOOL_OR        = r'\|\|'
@@ -91,14 +94,18 @@ class BashLexer(Lexer):
     BOOL_GREATER   = r'>'
     LPAREN         = r'\('
     RPAREN         = r'\)'
+    LBRACE         = r'{'
+    RBRACE         = r'}'
     LDBRACK        = r'\[\['
     RDBRACK        = r'\]\]'
     LBRACK         = r'\['
     RBRACK         = r'\]'
-    ASSIGN         = r'\-=|\+=|='
+    ARITH_ASSIGN   = r'\-=|\+='
+    ASSIGN         = r'='
     PIPE           = r'\|'
     STAR           = r'\*'
     CMDSEP         = r';'
+    AMPERSAND      = r'(?<=\b)&(?=\b)'
     BOOL_NOT       = r'!'
 
     # Line number tracking

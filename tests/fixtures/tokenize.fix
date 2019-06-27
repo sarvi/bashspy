@@ -5,7 +5,7 @@
 echo "S1('$S1') is not equal to S2('$S2')"
 
 # Expected
-[["ID", "x"], ["ASSIGN", "+="], ["VAL_STRING", "1"], ["ID", "y"], ["ASSIGN", "="], ["NEWLINE", "\n"]]
+[["ID", "x"], ["ARITH_ASSIGN", "+="], ["VAL_STRING", "1"], ["ID", "y"], ["ASSIGN", "="], ["NEWLINE", "\n"]]
 
 # Test code
 x+=1 y=
